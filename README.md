@@ -1,4 +1,4 @@
-# jfpk
+# bins-admin
 
 ## Project setup
 ```
