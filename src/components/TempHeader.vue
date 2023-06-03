@@ -90,6 +90,7 @@
                   variant="plain"
                   rounded="0"
                   class="align-self-center me-4"
+                  :class="($route.params.pathMatch && $route.params.pathMatch[0] == 'master') ? 'active' : ''"
                   height="100%"
                   v-bind="props"
                 >
@@ -101,12 +102,10 @@
               </template>
 
               <v-list class="bg-grey-lighten-3">
-                <v-list-item
-                  v-for="item in more"
-                  :key="item"
-                  @click="addItem(item)"
-                >
-                  {{ item }}
+                <v-list-item v-for="item in more" :key="item.name">
+                  <router-link :to="item.url">
+                    {{ item.name }}
+                  </router-link>    
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -123,17 +122,19 @@
 export default {
   data() {
     return {
-        user: null,
-        darkMode: false,
-        currentItem: 'Dashboard',
-        items: [
-          {icon: 'home-analytics', text: 'Dashboard', url: '/'}, 
-          {icon: 'playlist-edit', text: 'Transaksi', url: 'transaction'}, 
-          {icon: 'forum-outline', text: 'Dikusi', url: 'discuss'},
-          {icon: 'account-check', text: 'User', url: 'users'}
-        ],
+      user: null,
+      darkMode: false,
+      currentItem: 'Dashboard',
+      items: [
+        {icon: 'home-analytics', text: 'Dashboard', url: '/'}, 
+        {icon: 'playlist-edit', text: 'Transaksi', url: '/transaction'}, 
+        {icon: 'forum-outline', text: 'Dikusi', url: '/discuss'},
+        {icon: 'account-check', text: 'User', url: '/users'}
+      ],
       more: [
-        'Produk', 'Categori', 'Tutorial',
+        {name: 'Produk', url: '/master/produk'},
+        {name: 'Categori', url: '/master/categori'},
+        {name: 'Tutorial', url: '/master/tutorial'},
       ],
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     }

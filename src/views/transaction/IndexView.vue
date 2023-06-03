@@ -4,10 +4,10 @@
         <h2 class="mt-1 text-left">Daftar Pesanan</h2>
       </v-col>
       <v-col lg="3">
-        <VueDatePicker v-model="dates" range format="d/MM/y" :enableTimePicker="false"/>
+        <VueDatePicker v-model="filters.dates" range format="dd/MM/y" :enableTimePicker="false"/>
       </v-col>
       <v-col lg="3">
-        <v-text-field label="Kata Kunci..." prepend-inner-icon="mdi-magnify" variant="outlined" class=""></v-text-field>
+        <v-text-field v-model="filters.q" label="Kata Kunci..." @click="setFilter" prepend-inner-icon="mdi-magnify" variant="outlined" class=""></v-text-field>
       </v-col>
   </v-row>
 
@@ -15,9 +15,12 @@
       <v-alert type="error">We're sorry, we're not able to retrieve this information at the moment, please try back later</v-alert>
   </section>
   <section v-else>
-    <v-item-group multiple selected-class="bg-info" class="text-left mt-1 mb-3">
+    <v-item-group multiple selected-class="bg-info" class="text-left mt-1 mb-3"
+      v-model="filters.status"
+      >
       <v-item v-for="status in statuses" :key="status.id" v-slot="{ selectedClass, toggle }" >
         <v-chip
+          filter
           :class="selectedClass"
           class="mr-1"
           @click="toggle"
@@ -115,13 +118,14 @@
       components: { VueDatePicker },
       data() {
         return {
-          dates: ['2018-09-15', '2018-09-20'],
           statuses: [],
           transactions: [],
           loading: true,
           errored: false,
           filters:{
-            onlyProgress : true,
+            q: '',
+            dates: ['2018-09-15', '2018-09-20'],
+            status: [],
           },
           config : {
             headers:{
@@ -136,6 +140,10 @@
         this.getStatus();
       },
       methods: {
+        setFilter: function(e) {
+          console.log(e);
+          console.log(this.filters);
+        },
         getIndex: function() {
           var formData = new FormData();
           Object.entries(this.filters).forEach(([key, value]) => {
