@@ -17,7 +17,7 @@
         <v-spacer></v-spacer>
         <v-toolbar-title>
           <router-link to="/">
-              <img src="/img/logo.png" alt="Site Logo" style="width: 60px; float: left;"/>
+              <img src="/img/logo.png" alt="Site Logo" style="width: 55px; float: left;"/>
               <h4 class="float-left pt-3">Admin Panel</h4>
           </router-link> 
         </v-toolbar-title>
@@ -90,7 +90,7 @@
                   variant="plain"
                   rounded="0"
                   class="align-self-center me-4"
-                  :class="($route.params.pathMatch && $route.params.pathMatch[0] == 'master') ? 'active' : ''"
+                  :class="($route.path.includes('master')) ? 'active' : ''"
                   height="100%"
                   v-bind="props"
                 >
@@ -132,8 +132,8 @@ export default {
         {icon: 'account-check', text: 'User', url: '/users'}
       ],
       more: [
-        {name: 'Produk', url: '/master/produk'},
-        {name: 'Categori', url: '/master/categori'},
+        {name: 'Produk', url: '/master/product'},
+        {name: 'Categori', url: '/master/category'},
         {name: 'Tutorial', url: '/master/tutorial'},
       ],
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',

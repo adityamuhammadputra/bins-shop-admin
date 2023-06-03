@@ -196,6 +196,10 @@ body {
 .header-bottom .v-toolbar__content {
     display: none;
 }
+
+.v-selection-control {
+    height: 30px !important;
+}
 .header-bottom.sticky {
     position: fixed;
     z-index: 99;

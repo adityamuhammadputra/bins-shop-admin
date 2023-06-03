@@ -83,6 +83,14 @@ vueApp.mixin({
                 return string.substring(0, 4)
             return string
         },
+        dateNow: function(firstOrLast = null) {
+            if (firstOrLast) {
+                if (firstOrLast == 'first') 
+                    return moment(new Date()).subtract(7, 'days').format('YYYY-MM-DD');
+                return moment(new Date()).add(7, 'days').format('YYYY-MM-DD');
+            }
+            return moment(new Date()).format('YYYY-MM-DD');
+        },
         dateOuput: function(date) {
             return moment(date).format('DD/MM/YYYY');
         },

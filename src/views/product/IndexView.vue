@@ -1,29 +1,33 @@
 <template>
   <v-row>
       <v-col lg="6">
-        <h2 class="mt-1 text-left">Daftar Pesanan</h2>
+        <h2 class="mt-1 text-left">Daftar Product</h2>
       </v-col>
-      <v-col lg="3">
-        <VueDatePicker v-model="filters.dates" range format="dd/MM/y" :enableTimePicker="false"/>
+      <v-col lg="2">
+        <v-item-group multiple selected-class="bg-red" class="text-right mt-1 mb-3"
+          v-model="filters.status" @click="getIndex" >
+          <v-item v-for="(val, key) in statuses" :key="key" v-slot="{ selectedClass, toggle }">
+            <v-chip filter :class="selectedClass" class="mr-1" @click="toggle" >
+              {{ val.val }} 
+            </v-chip>
+          </v-item>
+        </v-item-group>
       </v-col>
       <v-col lg="3">
         <v-text-field v-model="filters.q" label="Kata Kunci..." @keyup="getIndex" prepend-inner-icon="mdi-magnify" variant="outlined" class=""></v-text-field>
       </v-col>
+      <v-col lg="1">
+        <v-btn flat color="success">
+          <v-icon>mdi-plus</v-icon> Tambah
+        </v-btn>
+      </v-col>
+
   </v-row>
 
   <section v-if="errored">
       <v-alert type="error">We're sorry, we're not able to retrieve this information at the moment, please try back later</v-alert>
   </section>
   <section v-else>
-    <v-item-group multiple selected-class="bg-red" class="text-left mt-1 mb-3"
-      v-model="filters.status" @click="getIndex">
-      <v-item v-for="(val, key) in statuses" :key="key" v-slot="{ selectedClass, toggle }">
-        <v-chip filter :class="selectedClass" class="mr-1" @click="toggle" >
-          {{ val }} 
-        </v-chip>
-      </v-item>
-    </v-item-group>
-
     <v-card
     :loading="loading"
     >
@@ -38,71 +42,64 @@
         <v-table class="mt-3 table-left">
           <thead>
             <tr>
-              <th>No</th> 
-              <th>Invoice</th> 
-              <th>User</th> 
-              <th>Produk</th>
-              <th>Total Harga</th>
-              <th class="text-center"> Status</th>
+              <th class="text-center">No</th> 
+              <th>Produk</th> 
+              <th class="text-center">Stok</th> 
+              <th class="text-center">Terjual</th> 
+              <th class="text-center" style="width: 10px;"> Aktif</th>
               <th class="text-center"> CreatedAt</th>
-              <th> </th>
+              <th style="width: 10px;"> </th>
             </tr>
           </thead>
           <tbody>
             <tr v-if="loading">
-              <td class="text-center" colspan="8">Loading...</td>
+              <td class="text-center" colspan="6">Loading...</td>
             </tr>
-            <tr v-else-if="transactions.length == 0">
-              <td class="text-center" colspan="8">Data tidak tersedia</td>
+            <tr v-else-if="products.length == 0">
+              <td class="text-center" colspan="6">Data tidak tersedia</td>
             </tr>
             <tr v-else
-                v-for="(transaction, index) in transactions" v-bind:key="transaction.id">
+                v-for="(product, index) in products" v-bind:key="product.id">
               <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ transaction.invoice }}</td>
               <td>
-                <v-list-item :prepend-avatar="transaction.user.avatar"
-                  :title="transaction.user.name"
-                  :subtitle="transaction.user.phone"
-                  class="px-0 py-0"
-                  style="min-height: unset;"
-                  >
-                </v-list-item>
-              </td>
-              <td>
-                <template v-for="detail in transaction.transaction_details" :key="detail.id">
-                  <v-list-item :prepend-avatar="detail.product.file"
-                    :title="detail.name"
-                    :subtitle="detail.price_rp + ' x ' + detail.qty"
+                  <v-list-item :prepend-avatar="product.file"
+                    :title="product.name"
+                    :subtitle="product.price_rp"
                     class="px-0 py-0"
                     style="min-height: unset;"
                     >
                   </v-list-item>
-                </template>
-              </td>
-              <td>
-                {{ transaction.total_rp }}  <!-- <v-badge color="info" :content="jfpk.jfpk_total" inline></v-badge> -->
               </td>
               <td class="text-center">
-                <v-chip class="ma-1" :color="transaction.status.color" size="small">
-                  <small>{{ transaction.status.name }}</small>
+                <v-chip class="ma-1" :color="(product.stock < 10) ? 'warning' : 'info'" size="small">
+                  <small>{{ product.stock }}</small>
                 </v-chip>
               </td>
-              <td>
-                {{ dateTimeOuput(transaction.updated_at) }}
+              <td class="text-center">
+                <v-chip class="ma-1" color="success" size="small">
+                  <small>{{ product.sold }}</small>
+                </v-chip>
+              </td>
+              <td class="text-center">
+                <v-switch
+                  v-model="products[index].status" color="info"
+                  :model-value="(products[index].status == 1) ? true : false"
+                  hide-details
+                ></v-switch>
+                <!-- <template v-if="product.status == 1">
+                  <v-icon>mdi-check-all</v-icon> Aktif
+                </template>
+                <template v-else>
+                  <v-icon>mdi-cancel</v-icon> Tidak
+                </template> -->
+              </td>
+              <td class="text-center">
+                {{ dateTimeOuput(product.updated_at) }}
               </td>
               <td>
-                <v-btn size="small" flat v-if="transaction.status.id == 2" color="info" @click="updateStatus(transaction, 3)">
-                  <v-icon>mdi-check-all</v-icon> Kirim
+                <v-btn size="small" flat color="info">
+                  <v-icon>mdi-pencil</v-icon> Edit
                 </v-btn>
-                <v-btn size="small" flat v-else-if="transaction.status.id == 3" color="success" @click="updateStatus(transaction, 4)">
-                  <v-icon>mdi-check-all</v-icon> Selesaikan
-                </v-btn>
-                <v-btn size="small" flat v-else-if="transaction.status.id == 9" color="success" @click="updateStatus(transaction, 10)">
-                  <v-icon>mdi-cash-multiple</v-icon> Refund
-                </v-btn>
-                <template v-else>
-                  <v-icon>mdi-check-all</v-icon> ok
-                </template>
               </td>
             </tr>
           </tbody>
@@ -115,20 +112,22 @@
   
 <script>
   
-  import VueDatePicker from '@vuepic/vue-datepicker';
-  import '@vuepic/vue-datepicker/dist/main.css'
+  // import VueDatePicker from '@vuepic/vue-datepicker';
+  // import '@vuepic/vue-datepicker/dist/main.css'
     export default {
-      components: { VueDatePicker },
+      // components: { VueDatePicker },
       data() {
         return {
-          statuses: [],
-          transactions: [],
+          statuses: [
+            {key: 0, val: 'Tidak Aktif'}, 
+            {key: 1, val: 'Aktif'}, 
+          ],
+          products: [],
           loading: true,
           errored: false,
           filters:{
             q: '',
-            dates: [this.dateNow('first'), this.dateNow('last')],
-            status: [1, 2, 4],
+            status: [1],
           },
           config : {
             headers:{
@@ -140,14 +139,14 @@
       computed: {
       },
       mounted() {
-        this.getStatus();
+        this.getIndex();
       },
       methods: {
         getIndex: function() {
           this.loading = true
-          this.axios.post('transaction', this.filters, this.config)
+          this.axios.post('product', this.filters, this.config)
           .then((response) => {
-            this.transactions = response.data.data;
+            this.products = response.data.data;
           })
           .catch(error => {
             this.loading = true
@@ -193,14 +192,6 @@
               }
           })
         },
-        getStatus: function() {
-          this.axios.get('status', this.config)
-          .then((response) => {
-            this.statuses = response.data;
-            this.getIndex();
-          })
-        },
-
       }
     }
   </script>

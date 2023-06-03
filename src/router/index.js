@@ -5,6 +5,7 @@ import PathNotFound from '../views/auth/PageNotFound.vue'
 import ProfileView from '../views/auth/ProfileView.vue'
 
 import TransactionView from '../views/transaction/IndexView.vue'
+import ProductView from '../views/product/IndexView.vue'
 
 
 const routes = [
@@ -28,6 +29,11 @@ const routes = [
     // meta: {
     //   requiresAuth: true,
     // }
+  },
+  {
+    path: '/master/product',
+    name: 'product',
+    component: ProductView,
   },
   {
     path: '/profile',
