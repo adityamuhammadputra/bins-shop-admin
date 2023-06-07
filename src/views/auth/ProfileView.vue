@@ -1,6 +1,7 @@
 <template>
      <v-toolbar density="compact" color="transparent">
-        <v-toolbar-title>Profile {{ this.userLogin().name ?? '' }}</v-toolbar-title>
+        <!-- <v-toolbar-title>Profile {{ this.userLogin().name ?? '' }}</v-toolbar-title> -->
+        <v-toolbar-title>Profile 'xxxxx'</v-toolbar-title>
         <v-spacer></v-spacer>
         <router-link to="/" class="custom-link">
             <v-btn text small color="info">

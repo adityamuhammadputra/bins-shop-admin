@@ -6,7 +6,7 @@
       <v-col lg="3">
         <VueDatePicker v-model="filters.dates" range format="dd/MM/y" :enableTimePicker="false"/>
       </v-col>
-      <v-col lg="3">
+      <v-col lg="3" class="text-min">
         <v-text-field v-model="filters.q" label="Kata Kunci..." @keyup="getIndex" prepend-inner-icon="mdi-magnify" variant="outlined" class=""></v-text-field>
       </v-col>
   </v-row>
@@ -80,7 +80,7 @@
                 </template>
               </td>
               <td>
-                {{ transaction.total_rp }}  <!-- <v-badge color="info" :content="jfpk.jfpk_total" inline></v-badge> -->
+                {{ transaction.total_rp }} 
               </td>
               <td class="text-center">
                 <v-chip class="ma-1" :color="transaction.status.color" size="small">
@@ -130,11 +130,6 @@
             dates: [this.dateNow('first'), this.dateNow('last')],
             status: [1, 2, 4],
           },
-          config : {
-            headers:{
-              Authorization: 'Bearer ' + this.$store.state.auth.user.accessToken,
-            }
-          },
         }
       },
       computed: {
@@ -145,7 +140,7 @@
       methods: {
         getIndex: function() {
           this.loading = true
-          this.axios.post('transaction', this.filters, this.config)
+          this.axios.post('transaction', this.filters, this.$store.state.config)
           .then((response) => {
             this.transactions = response.data.data;
           })
@@ -194,7 +189,7 @@
           })
         },
         getStatus: function() {
-          this.axios.get('status', this.config)
+          this.axios.get('status', this.$store.state.config)
           .then((response) => {
             this.statuses = response.data;
             this.getIndex();

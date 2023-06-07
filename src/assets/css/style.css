@@ -41,18 +41,6 @@ body {
 }
 
 
-/* input text */
-.v-input__control {
-    height: 37px;
-}
-
-.v-input__control > .v-field {
-    height: 42px;
-}
-.v-field__input {
-    padding-top: 8px !important;
-    padding-left: 4px;
-}
 
 .v-btn {
     text-transform: unset !important;
@@ -252,18 +240,65 @@ body {
     background-color: #f5f5f5;
 }
 
-.v-input__control .v-field__prepend-inner {
-    padding-top: 10px;
-}
-.v-input__control .v-field-label {
-    top: 8px !important;
-}
-.v-input__control .v-field__input {
-    padding-top: 2px !important;
+
+.v-field__input {
+    padding-top: 11px !important;
+    min-height: 37px !important;
+    padding-bottom: 8px !important;
 }
 
-.v-input__control .v-field__outline {
+/* input text min */
+.text-min .v-input__control .v-field__prepend-inner {
+    padding-top: 10px;
+}
+.text-min .v-input__control .v-field-label {
+    top: 8px !important;
+}
+.text-min .v-input__control .v-field__input {
+    /* padding-top: 2px !important; */
+}
+
+.text-min .v-input__control .v-field__outline {
     height: 37px;
+}
+
+.text-min .v-input__control {
+    height: 37px;
+}
+
+.text-min .v-field__input {
+    padding-top: 8px !important;
+    padding-left: 4px;
+}
+
+.text-min .text-center .v-field__input {
+    text-align: center;
+}
+
+.v-text-field__prefix, .v-text-field__suffix{
+    padding-top: 10px !important;
+    padding-bottom: 0px !important;
+}
+
+.input-file-preview{
+    position: absolute;
+    z-index: 1111;
+    color: transparent;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+}
+
+.img-no-contain {
+    object-fit: unset !important;
+    height: 100%;
+    width: 100%;
+}
+
+.img-user-avatar {
+    width: 35px;
+    float: left;
+    margin-top: 8px;
 }
 
 @media (min-width: 1400px) {

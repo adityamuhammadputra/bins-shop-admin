@@ -16,8 +16,11 @@ import * as directives from 'vuetify/directives'
 
 // Axios
 import axios from 'axios'
-// axios.defaults.baseURL = 'https://belajar-sisdm.bpk.go.id/api/'
+
 axios.defaults.baseURL = 'http://bins.local/api/v1/admin/'
+
+
+// http://localhost:8080/
 
 
 import VueAxios from 'vue-axios'
@@ -95,7 +98,9 @@ vueApp.mixin({
             return moment(date).format('DD/MM/YYYY');
         },
         dateTimeOuput: function(date) {
-            return moment(date).format('DD/MM/YYYY HH:mm');
+            if (date)
+                return moment(date).format('DD/MM/YYYY HH:mm');
+            return '-';
         },
         findString: function(str) {
             console.log(str);
@@ -124,6 +129,25 @@ vueApp.mixin({
             } else {
               return false
             }
+        },
+        formatRupiah: function(angka, prefix){
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split   		= number_string.split(','),
+            sisa     		= split[0].length % 3,
+            rupiah     		= split[0].substr(0, sisa),
+            separator       = sisa ? '.' : '',
+            ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+        
+            if(ribuan){
+                rupiah += separator + ribuan.join('.');
+            }
+        
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp.' + rupiah : '');
+        },
+        formatNumber: function(e){
+            let angka = e.target.value.replace(/[^,\d]/g, '').toString();
+            e.target.value = angka
         }
     },
 })

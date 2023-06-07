@@ -82,7 +82,7 @@
         },
         created() {
             if (this.loggedIn) {
-                this.$router.push("/data");
+                this.$router.push("/");
             }
         },
         mounted() {
@@ -90,10 +90,9 @@
         methods: {
             handleLogin() {
                 this.loading = true;
-                // return false;
                 this.$store.dispatch("auth/login", this.form).then(
                     () => {
-                        this.$router.push("/data");
+                        this.$router.push("/");
                         this.loading = false;
                     },
                     (error) => {

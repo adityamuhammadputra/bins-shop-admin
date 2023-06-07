@@ -1,27 +1,28 @@
 <template>
   <v-row>
-      <v-col lg="6">
-        <h2 class="mt-1 text-left">Daftar Product</h2>
-      </v-col>
-      <v-col lg="2">
-        <v-item-group multiple selected-class="bg-red" class="text-right mt-1 mb-3"
-          v-model="filters.status" @click="getIndex" >
-          <v-item v-for="(val, key) in statuses" :key="key" v-slot="{ selectedClass, toggle }">
-            <v-chip filter :class="selectedClass" class="mr-1" @click="toggle" >
-              {{ val.val }} 
-            </v-chip>
-          </v-item>
-        </v-item-group>
-      </v-col>
-      <v-col lg="3">
-        <v-text-field v-model="filters.q" label="Kata Kunci..." @keyup="getIndex" prepend-inner-icon="mdi-magnify" variant="outlined" class=""></v-text-field>
-      </v-col>
-      <v-col lg="1">
+    <v-col lg="5">
+      <h2 class="mt-1 text-left">Daftar Produk</h2>
+    </v-col>
+    <v-col lg="2">
+      <v-item-group multiple selected-class="bg-red" class="text-right mt-1 mb-3"
+        v-model="filters.status" @click="getIndex(false)" >
+        <v-item v-for="(val, key) in statuses" :key="key" v-slot="{ selectedClass, toggle }">
+          <v-chip filter :class="selectedClass" class="mr-1" @click="toggle" >
+            {{ val.val }} 
+          </v-chip>
+        </v-item>
+      </v-item-group>
+    </v-col>
+    <v-col lg="3" class="text-min">
+      <v-text-field v-model="filters.q" label="Kata Kunci..." @keyup="getIndex(false)" prepend-inner-icon="mdi-magnify" variant="outlined" class=""></v-text-field>
+    </v-col>
+    <v-col lg="2">
+      <router-link to="/master/product/create">
         <v-btn flat color="success">
-          <v-icon>mdi-plus</v-icon> Tambah
+            <v-icon>mdi-plus</v-icon> Tambah Product
         </v-btn>
-      </v-col>
-
+    </router-link> 
+    </v-col>
   </v-row>
 
   <section v-if="errored">
@@ -44,10 +45,10 @@
             <tr>
               <th class="text-center">No</th> 
               <th>Produk</th> 
-              <th class="text-center">Stok</th> 
+              <th class="text-center" style="width: 120px;">Stok</th> 
               <th class="text-center">Terjual</th> 
               <th class="text-center" style="width: 10px;"> Aktif</th>
-              <th class="text-center"> CreatedAt</th>
+              <th class="text-center"> Updated At</th>
               <th style="width: 10px;"> </th>
             </tr>
           </thead>
@@ -65,15 +66,20 @@
                   <v-list-item :prepend-avatar="product.file"
                     :title="product.name"
                     :subtitle="product.price_rp"
-                    class="px-0 py-0"
+                    class="px-0 py-0 pb-1"
                     style="min-height: unset;"
                     >
                   </v-list-item>
               </td>
-              <td class="text-center">
-                <v-chip class="ma-1" :color="(product.stock < 10) ? 'warning' : 'info'" size="small">
-                  <small>{{ product.stock }}</small>
+              <td class="text-min">
+                <v-text-field v-model="products[index].stock"
+                  class="text-center" variant="outlined" label="Ubah Stok" hide-details
+                  @blur="updateRow(product)"
+                ></v-text-field>
+                <!-- <v-chip class="ma-1" :color="(product.stock < 10) ? 'warning' : 'info'" size="small">
+                  <small>{{ product.stock }} </small> 
                 </v-chip>
+                <v-icon size="small">mdi-pencil</v-icon> -->
               </td>
               <td class="text-center">
                 <v-chip class="ma-1" color="success" size="small">
@@ -81,9 +87,9 @@
                 </v-chip>
               </td>
               <td class="text-center">
-                <v-switch
-                  v-model="products[index].status" color="info"
-                  :model-value="(products[index].status == 1) ? true : false"
+                <v-switch v-model="products[index].status" 
+                  @change="updateRow(product)"
+                  color="info" :model-value="(products[index].status == 1) ? true : false"
                   hide-details
                 ></v-switch>
                 <!-- <template v-if="product.status == 1">
@@ -97,9 +103,11 @@
                 {{ dateTimeOuput(product.updated_at) }}
               </td>
               <td>
-                <v-btn size="small" flat color="info">
-                  <v-icon>mdi-pencil</v-icon> Edit
-                </v-btn>
+                <router-link :to="'/master/product/' + product.id + '/edit'">
+                  <v-btn size="small" flat color="info">
+                    <v-icon>mdi-pencil</v-icon> Edit
+                  </v-btn>
+                </router-link>
               </td>
             </tr>
           </tbody>
@@ -128,12 +136,9 @@
           filters:{
             q: '',
             status: [1],
+            sort: 2,
           },
-          config : {
-            headers:{
-              Authorization: 'Bearer ' + this.$store.state.auth.user.accessToken,
-            }
-          },
+          
         }
       },
       computed: {
@@ -142,9 +147,9 @@
         this.getIndex();
       },
       methods: {
-        getIndex: function() {
-          this.loading = true
-          this.axios.post('product', this.filters, this.config)
+        getIndex: function(loadingStatus = true) {
+          this.loading = loadingStatus
+          this.axios.post('product-data', this.filters, this.$store.state.config)
           .then((response) => {
             this.products = response.data.data;
           })
@@ -156,40 +161,14 @@
             () => this.loading = false
           )
         },
-        updateStatus: function(transaction, status) {
-          let attr;
-          if (status == 3) {
-              attr = {
-                  'textHtml' : 'Sudah kirim Lisensi <b>' + transaction.invoice + '</b> ?',
-                  'textButton' : 'Ya, sudah',
-              }
-          }
-
-          if (status == 4) {
-              attr = {
-                  'textHtml' : 'Selesaikan transaksi <b>' + transaction.invoice + '</b> ? <p style="font-size: 14px;color: #8d8d8d;" class="mt-2">Pastikan pesanan pembeli sudah dikirim dan tidak ada masalah</p>',
-                  'textButton' : 'Ya, selesaikan',
-              }
-          }
-          this.$swal({
-              title: "Konfirmasi !",
-              html: attr.textHtml,
-              showCancelButton: true,
-              confirmButtonText: attr.textButton,
-              cancelButtonText: 'Kembali',
-              }).then((result) => {
-              if (result.isConfirmed) {
-                  this.axios.patch('transaction/' + transaction.id, {
-                      status : status,
-                  }, this.config)
-                  .then((response) => {
-                      this.successNotif(response.data.message)
-                      this.getIndex();
-                  })
-                  .catch(error => {
-                      this.errorNotif(error)
-                  })
-              }
+        updateRow: function(product) {
+          this.axios.patch('product-row/' + product.id, product, this.config)
+          .then((response) => {
+              this.successNotif(response.data.message)
+              this.getIndex(false);
+          })
+          .catch(error => {
+              this.errorNotif(error)
           })
         },
       }

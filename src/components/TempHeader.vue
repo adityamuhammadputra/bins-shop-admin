@@ -26,10 +26,12 @@
         <v-menu transition="scale-transition" >
           <template v-slot:activator="{ props }">
             <v-list v-bind="props">
+              <img :src="user.avatar" referrerpolicy="no-referrer" class="img-user-avatar"
+               style="border-radius: 100%;" v-if="user">
               <v-list-item
-                prepend-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
-                title="adityamuhammadputra"
+                :title="(user) ? user.name : ''"
                 subtitle="admin"
+                class="px-2"
               >
               </v-list-item>
             </v-list>

@@ -6,7 +6,7 @@ import ProfileView from '../views/auth/ProfileView.vue'
 
 import TransactionView from '../views/transaction/IndexView.vue'
 import ProductView from '../views/product/IndexView.vue'
-
+import ProductForm from '../views/product/FormView.vue'
 
 const routes = [
   {
@@ -34,6 +34,16 @@ const routes = [
     path: '/master/product',
     name: 'product',
     component: ProductView,
+  },
+  {
+    path: '/master/product/create',
+    name: 'produt-create',
+    component: ProductForm,
+  },
+  {
+    path: '/master/product/:slug/edit',
+    name: 'produt-edit',
+    component: ProductForm,
   },
   {
     path: '/profile',

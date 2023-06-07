@@ -1,15 +1,12 @@
 import axios from 'axios';
 
-// const API_URL = 'http://sisdm.local/api/jfpk/auth/';
-const API_URL = 'https://belajar-sisdm.bpk.go.id/api/jfpk/auth/';
-
-
 class AuthService {
     login(user) {
       return axios
-        .post(API_URL + 'login', {
+        .post('auth/login', {
           email: user.email,
-          password: user.password
+          password: user.password,
+          admin: true,
         })
         .then(response => {
             // console.log(response.data);
