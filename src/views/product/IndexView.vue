@@ -43,13 +43,13 @@
         <v-table class="mt-3 table-left">
           <thead>
             <tr>
-              <th class="text-center">No</th> 
+              <th class="text-center" style="width: 10px;">No</th> 
               <th>Produk</th> 
               <th class="text-center" style="width: 120px;">Stok</th> 
               <th class="text-center">Terjual</th> 
               <th class="text-center" style="width: 10px;"> Aktif</th>
               <th class="text-center"> Updated At</th>
-              <th style="width: 10px;"> </th>
+              <th style="width: 155px;"> </th>
             </tr>
           </thead>
           <tbody>
@@ -103,11 +103,14 @@
                 {{ dateTimeOuput(product.updated_at) }}
               </td>
               <td>
-                <router-link :to="'/master/product/' + product.id + '/edit'">
+                <router-link :to="'/master/product/' + product.slug + '/edit'">
                   <v-btn size="small" flat color="info">
                     <v-icon>mdi-pencil</v-icon> Edit
                   </v-btn>
                 </router-link>
+                <v-btn size="small" flat color="red" class="ml-1">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
               </td>
             </tr>
           </tbody>
