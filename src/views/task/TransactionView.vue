@@ -177,7 +177,7 @@
               if (result.isConfirmed) {
                   this.axios.patch('transaction/' + transaction.id, {
                       status : status,
-                  }, this.config)
+                  }, this.$store.state.config)
                   .then((response) => {
                       this.successNotif(response.data.message)
                       this.getIndex();

@@ -301,6 +301,27 @@ body {
     margin-top: 8px;
 }
 
+.avatar-flat .v-avatar {
+    border-radius: 0px !important;
+}
+
+.border-bottom {
+    border-bottom: 1px solid rgb(223, 223, 223) !important;
+}
+
+.replay {
+    margin-left: 50px;
+    margin-top: 10px;
+    background: #f6f6f6;
+    padding: 5px 7px;
+    border-radius: 5px;
+}
+
+.v-list-item__prepend {
+    align-items: start !important;
+    align-self: start !important;
+}
+
 @media (min-width: 1400px) {
     .v-container, .v-container-lg, .v-container-md, .v-container-sm, .v-container-xl, .v-container-xxl {
         max-width: 1340px !important;

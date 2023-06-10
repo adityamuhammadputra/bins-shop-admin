@@ -5,7 +5,7 @@
     </v-col>
     <v-col lg="2">
       <v-item-group multiple selected-class="bg-red" class="text-right mt-1 mb-3"
-        v-model="filters.status" @click="getIndex(false)" >
+        v-model="filters.status" @click="getProduct(false)" >
         <v-item v-for="(val, key) in statuses" :key="key" v-slot="{ selectedClass, toggle }">
           <v-chip filter :class="selectedClass" class="mr-1" @click="toggle" >
             {{ val.val }} 
@@ -14,7 +14,7 @@
       </v-item-group>
     </v-col>
     <v-col lg="3" class="text-min">
-      <v-text-field v-model="filters.q" label="Kata Kunci..." @keyup="getIndex(false)" prepend-inner-icon="mdi-magnify" variant="outlined" class=""></v-text-field>
+      <v-text-field v-model="filters.q" label="Kata Kunci..." @keyup="getProduct(false)" prepend-inner-icon="mdi-magnify" variant="outlined" class=""></v-text-field>
     </v-col>
     <v-col lg="2">
       <router-link to="/master/product/create">
@@ -45,8 +45,9 @@
             <tr>
               <th class="text-center" style="width: 10px;">No</th> 
               <th>Produk</th> 
-              <th class="text-center" style="width: 120px;">Stok</th> 
               <th class="text-center">Terjual</th> 
+              <th class="text-center" style="width: 120px;">Diskon %</th> 
+              <th class="text-center" style="width: 120px;">Stok</th> 
               <th class="text-center" style="width: 10px;"> Aktif</th>
               <th class="text-center"> Updated At</th>
               <th style="width: 155px;"> </th>
@@ -54,10 +55,10 @@
           </thead>
           <tbody>
             <tr v-if="loading">
-              <td class="text-center" colspan="6">Loading...</td>
+              <td class="text-center" colspan="8">Loading...</td>
             </tr>
             <tr v-else-if="products.length == 0">
-              <td class="text-center" colspan="6">Data tidak tersedia</td>
+              <td class="text-center" colspan="8">Data tidak tersedia</td>
             </tr>
             <tr v-else
                 v-for="(product, index) in products" v-bind:key="product.id">
@@ -65,27 +66,33 @@
               <td>
                   <v-list-item :prepend-avatar="product.file"
                     :title="product.name"
-                    :subtitle="product.price_rp"
                     class="px-0 py-0 pb-1"
                     style="min-height: unset;"
                     >
+                    <div class="v-list-item-subtitle" v-if="product.discount">
+                      <del style="color: #f55a4e;">{{ product.price_rp }}</del> {{ product.price_final_rp }}
+                    </div>
+                    <div class="v-list-item-subtitle" v-else>{{ product.price_rp }}</div>
                   </v-list-item>
-              </td>
-              <td class="text-min">
-                <v-text-field v-model="products[index].stock"
-                  class="text-center" variant="outlined" label="Ubah Stok" hide-details
-                  @blur="updateRow(product)"
-                ></v-text-field>
-                <!-- <v-chip class="ma-1" :color="(product.stock < 10) ? 'warning' : 'info'" size="small">
-                  <small>{{ product.stock }} </small> 
-                </v-chip>
-                <v-icon size="small">mdi-pencil</v-icon> -->
               </td>
               <td class="text-center">
                 <v-chip class="ma-1" color="success" size="small">
                   <small>{{ product.sold }}</small>
                 </v-chip>
               </td>
+              <td class="text-min">
+                <v-text-field v-model="products[index].discount"
+                  class="text-center" variant="outlined" label="Diskon" hide-details
+                  @blur="updateRow(product)"
+                ></v-text-field>
+              </td>
+              <td class="text-min">
+                <v-text-field v-model="products[index].stock"
+                  class="text-center" variant="outlined" label="Ubah Stok" hide-details
+                  @blur="updateRow(product)"
+                ></v-text-field>
+              </td>
+              
               <td class="text-center">
                 <v-switch v-model="products[index].status" 
                   @change="updateRow(product)"
@@ -108,7 +115,7 @@
                     <v-icon>mdi-pencil</v-icon> Edit
                   </v-btn>
                 </router-link>
-                <v-btn size="small" flat color="red" class="ml-1">
+                <v-btn size="small" flat color="red" class="ml-1" @click="deleteProduct(product)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </td>
@@ -147,10 +154,10 @@
       computed: {
       },
       mounted() {
-        this.getIndex();
+        this.getProduct();
       },
       methods: {
-        getIndex: function(loadingStatus = true) {
+        getProduct: function(loadingStatus = true) {
           this.loading = loadingStatus
           this.axios.post('product-data', this.filters, this.$store.state.config)
           .then((response) => {
@@ -165,13 +172,33 @@
           )
         },
         updateRow: function(product) {
-          this.axios.patch('product-row/' + product.id, product, this.config)
+          this.axios.patch('product-row/' + product.id, product, this.$store.state.config)
           .then((response) => {
               this.successNotif(response.data.message)
-              this.getIndex(false);
+              this.getProduct(false);
           })
           .catch(error => {
               this.errorNotif(error)
+          })
+        },
+        deleteProduct: function(product) {
+          this.$swal({
+              title: "Konfirmasi !",
+              html: "Hapus product <b>" + product.name + "</b> ?",
+              showCancelButton: true,
+              confirmButtonText: 'Ya, Hapus',
+              cancelButtonText: 'Kembali',
+              }).then((result) => {
+              if (result.isConfirmed) {
+                  this.axios.delete('product/' + product.id, this.$store.state.config)
+                  .then((response) => {
+                      this.successNotif(response.data.message)
+                      this.getIndex();
+                  })
+                  .catch(error => {
+                      this.errorNotif(error)
+                  })
+              }
           })
         },
       }

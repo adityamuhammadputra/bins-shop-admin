@@ -97,9 +97,17 @@ vueApp.mixin({
         dateOuput: function(date) {
             return moment(date).format('DD/MM/YYYY');
         },
+        dateOuput2: function(date) {
+            return moment(date).format('DD MMMM YYYY');
+        },
         dateTimeOuput: function(date) {
             if (date)
                 return moment(date).format('DD/MM/YYYY HH:mm');
+            return '-';
+        },
+        dateTimeOuput2: function(date) {
+            if (date)
+                return moment(date).format('DD MMMM YYYY HH:mm');
             return '-';
         },
         findString: function(str) {

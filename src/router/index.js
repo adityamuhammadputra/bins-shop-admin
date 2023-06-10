@@ -4,7 +4,8 @@ import LoginView from '../views/auth/LoginView.vue'
 import PathNotFound from '../views/auth/PageNotFound.vue'
 import ProfileView from '../views/auth/ProfileView.vue'
 
-import TransactionView from '../views/transaction/IndexView.vue'
+import TransactionView from '../views/task/TransactionView.vue'
+import DiscussView from '../views/task/DiscussView.vue'
 import ProductView from '../views/product/IndexView.vue'
 import ProductForm from '../views/product/FormView.vue'
 
@@ -29,6 +30,11 @@ const routes = [
     // meta: {
     //   requiresAuth: true,
     // }
+  },
+  {
+    path: '/discuss',
+    name: 'discuss',
+    component: DiscussView,
   },
   {
     path: '/master/product',

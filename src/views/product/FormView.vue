@@ -119,7 +119,7 @@
           <small>Minimum yang harus dibeli untuk produk ini</small><br/>
         </v-col>
         <v-col cols="2">
-          <v-text-field v-model="product.minorder" min="1" @keyup="formatNumber" placeholder="Nama Produk" variant="outlined"></v-text-field>
+          <v-text-field v-model="product.minorder" min="1" @keyup="formatNumber" placeholder="Minimal Pesan" variant="outlined"></v-text-field>
         </v-col>
       </v-row>
     </v-card-text>
