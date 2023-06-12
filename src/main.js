@@ -39,6 +39,7 @@ import { useToast } from "vue-toastification";
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 // addIcons(FaFlag, RiZhihuFill);
+// import VueApexCharts from 'vue-apexcharts'
 
 const vuetify = createVuetify({
   components,
