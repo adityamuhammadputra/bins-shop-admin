@@ -111,6 +111,11 @@ vueApp.mixin({
                 return moment(date).format('DD MMMM YYYY HH:mm');
             return '-';
         },
+        dateTimeOuput3: function(date) {
+            if (date)
+                return moment(date).format('DD/MM/YY HH:mm');
+            return '-';
+        },
         findString: function(str) {
             console.log(str);
         },

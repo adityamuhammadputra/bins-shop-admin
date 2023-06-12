@@ -62,12 +62,42 @@
   </section>
 
   <v-row class="mt-5" v-if="!loading">
-      <v-col lg="9">
-        <h2 class="mt-1 text-left">Aktivitias User Hari ini</h2>
-      </v-col>
-      <v-col lg="3">
-        <VueDatePicker v-model="filters.dates" range format="dd/MM/y" :enableTimePicker="false"/>
-      </v-col>
+    <v-col lg="9">
+      <h2 class="mt-1 text-left">User Hari ini</h2>
+    </v-col>
+    <v-col lg="3">
+      <VueDatePicker v-model="filters.dates" range format="dd/MM/y" :enableTimePicker="false"/>
+    </v-col>
+    <!--  -->
+
+    <v-col lg="5">
+      <v-card>
+        <v-card-text class="text-left" style="max-height: 500px;overflow-y: auto;">
+          <v-card-title class="text-center" style="font-size: 18px;">Last 50 Aktivitas</v-card-title>
+          <v-timeline>
+            <v-timeline-item size="large" v-for="(log, index) in userLogs" v-bind:key="index">
+              <template v-slot:icon v-if="log.user">
+                <v-avatar :image="log.user.avatar"></v-avatar>
+              </template>
+              <template v-slot:icon v-else>
+                <v-icon>close</v-icon>
+              </template>
+
+              <template v-slot:opposite>
+                <span>{{ dateTimeOuput3(log.created_at) }}</span>
+              </template>
+              <v-card class="elevation-2">
+                <v-card-text class="pt-2 pb-2">
+                  <h5 v-if="log.user">{{ log.user.name }}</h5>
+                  {{ log.desc }} <br/>
+                  <small style="color: #a1a1a1;">IP: {{ log.ip_address }}</small>
+                </v-card-text>
+              </v-card>
+            </v-timeline-item>
+          </v-timeline>
+        </v-card-text>
+      </v-card>
+    </v-col>
   </v-row>
 
 </template>
@@ -160,6 +190,7 @@
             borderColor: '#f1f1f1',
           }
         },
+        userLogs: [],
       }
     },
     computed: {
@@ -172,11 +203,12 @@
         this.loading = true
         this.axios.post('dashboard', this.filters, this.$store.state.config)
         .then((response) => {
-          console.log(response.data);
           this.dashboards = response.data;
           this.chartOptions.colors = response.data.row3.colors
           this.chartOptions.xaxis.categories = response.data.row3.categories
           this.series = response.data.row3.series
+          this.userLogs = response.data.row4.logs
+          console.log(this.userLogs);
         })
         .catch(error => {
           this.loading = true
