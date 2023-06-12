@@ -6,6 +6,8 @@ import ProfileView from '../views/auth/ProfileView.vue'
 
 import TransactionView from '../views/task/TransactionView.vue'
 import DiscussView from '../views/task/DiscussView.vue'
+import UserView from '../views/task/UserView.vue'
+
 import ProductView from '../views/product/IndexView.vue'
 import ProductForm from '../views/product/FormView.vue'
 
@@ -35,6 +37,11 @@ const routes = [
     path: '/discuss',
     name: 'discuss',
     component: DiscussView,
+  },
+  {
+    path: '/users',
+    name: 'users',
+    component: UserView,
   },
   {
     path: '/master/product',
