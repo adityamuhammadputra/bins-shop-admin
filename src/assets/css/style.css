@@ -322,6 +322,11 @@ body {
     align-self: start !important;
 }
 
+table .v-list-item__content {
+    position: relative;
+    top: -4px;
+}
+
 .icon-large .mdi {
     font-size: 50px; 
 }

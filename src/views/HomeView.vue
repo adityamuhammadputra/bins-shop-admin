@@ -62,18 +62,14 @@
   </section>
 
   <v-row class="mt-5" v-if="!loading">
-    <v-col lg="9">
+    <!-- <v-col lg="12">
       <h2 class="mt-1 text-left">User Hari ini</h2>
-    </v-col>
-    <v-col lg="3">
-      <VueDatePicker v-model="filters.dates" range format="dd/MM/y" :enableTimePicker="false"/>
-    </v-col>
-    <!--  -->
+    </v-col> -->
 
     <v-col lg="5">
       <v-card>
         <v-card-text class="text-left scroll-custom" style="max-height: 500px;overflow-y: auto;">
-          <v-card-title class="text-center" style="font-size: 18px;">Last 50 Aktivitas</v-card-title>
+          <v-card-title class="text-left" style="font-size: 18px;">Last 50 Aktivitas</v-card-title>
           <v-timeline>
             <v-timeline-item size="large" v-for="(log, index) in userLogs" v-bind:key="index">
               <template v-slot:icon v-if="log.user">
@@ -95,6 +91,51 @@
               </v-card>
             </v-timeline-item>
           </v-timeline>
+        </v-card-text>
+      </v-card>
+    </v-col>
+
+    <v-col lg="7">
+      <v-card>
+        <v-card-text class="text-left scroll-custom" style="max-height: 500px;overflow-y: auto;">
+          <v-card-title class="text-left" style="font-size: 18px;">User Online</v-card-title>
+          <v-table class="mt-3 table-left">
+          <thead>
+            <tr>
+              <th>No</th> 
+              <th>User</th> 
+              <th>No Hp</th> 
+              <th class="text-center"> Online Terakhir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-if="loading">
+              <td class="text-center" colspan="8">Loading...</td>
+            </tr>
+            <tr v-else-if="userOnline.length == 0">
+              <td class="text-center" colspan="8">Tidak ada user yg online</td>
+            </tr>
+            <tr v-else
+                v-for="(user, index) in userOnline" v-bind:key="user.id">
+              <td class="text-center">{{ index+1 }}</td>
+              <td>
+                <v-list-item :prepend-avatar="user.avatar"
+                  :title="user.name"
+                  :subtitle="user.email"
+                  class="px-0 py-0"
+                  style="min-height: unset;"
+                  >
+                </v-list-item>
+              </td>
+              <td>
+                {{ user.phone }} 
+              </td>
+              <td  class="text-center">
+                {{ dateTimeOuput(user.last_seen) }}
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
         </v-card-text>
       </v-card>
     </v-col>
@@ -166,14 +207,14 @@
               {
                 title: {
                   formatter: function (val) {
-                    return val + " (mins)"
+                    return val;
                   }
                 }
               },
               {
                 title: {
                   formatter: function (val) {
-                    return val + " per session"
+                    return val;
                   }
                 }
               },
@@ -191,6 +232,7 @@
           }
         },
         userLogs: [],
+        userOnline: [],
       }
     },
     computed: {
@@ -208,7 +250,7 @@
           this.chartOptions.xaxis.categories = response.data.row3.categories
           this.series = response.data.row3.series
           this.userLogs = response.data.row4.logs
-          console.log(this.userLogs);
+          this.userOnline = response.data.row4.user_online
         })
         .catch(error => {
           this.loading = true
