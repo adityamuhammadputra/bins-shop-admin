@@ -72,7 +72,7 @@
 
     <v-col lg="5">
       <v-card>
-        <v-card-text class="text-left" style="max-height: 500px;overflow-y: auto;">
+        <v-card-text class="text-left scroll-custom" style="max-height: 500px;overflow-y: auto;">
           <v-card-title class="text-center" style="font-size: 18px;">Last 50 Aktivitas</v-card-title>
           <v-timeline>
             <v-timeline-item size="large" v-for="(log, index) in userLogs" v-bind:key="index">

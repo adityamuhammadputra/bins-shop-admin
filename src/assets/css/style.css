@@ -326,6 +326,25 @@ body {
     font-size: 50px; 
 }
 
+.scroll-custom::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+.scroll-custom::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+.scroll-custom::-webkit-scrollbar-thumb {
+  background: #cecece; 
+}
+
+/* Handle on hover */
+.scroll-custom::-webkit-scrollbar-thumb:hover {
+  background: #979797; 
+}
+
 @media (min-width: 1400px) {
     .v-container, .v-container-lg, .v-container-md, .v-container-sm, .v-container-xl, .v-container-xxl {
         max-width: 1340px !important;
