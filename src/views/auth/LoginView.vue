@@ -1,45 +1,24 @@
 <template  class="login-page">
     <section class="login-page">
         <v-row style="height: 100%;">
-            <v-col sm="12" md="4" style="background-color: #2a56a7;" v-if="!isMobile()">
-                <v-card class="ml-md-auto card-login" style="margin-left: 30% !important; margin-top: 30%;">
-
-                    <v-chip class="ma-2" color="secondary chip-login">
-                        New
-                    </v-chip>
-                    <v-card-title class="text-left pl-0" 
-                        style="font-size: 27px; 
-                        font-weight: bold;">
-                        Selamat Datang <br> Aplikasi Jfpk SISDM
-                    </v-card-title>
-
-                    <v-img src="@/assets/img/bg2.png" cover class="text-white img-left-login"
-                    ></v-img>
-                    
-                    <p class="mt-4">Untuk pertanyaan teknis silakan hubungi: <br>SISDM ext 1230, 1237 <br> atau email ke</p>
-                    <v-btn  color="white" prepend-icon="mdi-email" class="mt-2" >
-                        helpdesk.sisdm@bpk.go.id
-                    </v-btn>
-                   
-                </v-card>
-            </v-col>
-            <v-col sm="12" md="8" style="background: url(https://admin.sli.do/static/settings-background.cbe10e77b055931b.png); background-repeat: no-repeat;
-                    background-position: 0% 117%;
-                    background-size: 50%;">
+            <v-col sm="12" md="12" style="background: url(https://admin.sli.do/static/settings-background.cbe10e77b055931b.png); background-repeat: no-repeat;
+                    background-position: 10% 150%;
+                    background-size: 100%;">
                 <v-container>
                     <v-card>
                         <v-card-item>
-                            <v-img src="https://belajar-sisdm.bpk.go.id/img/v3/logo-new.png"  
-                                class="text-white img-right-login"></v-img> 
                                 
-                            <v-card-title class="text-left title-login"><b>Silakan login <br> menggunakan akun anda</b></v-card-title>
+                            <v-card-title class="text-left title-login mb-5 pb-5">
+                                <v-img src="http://binsshop.tech/assets/images/logo/logo.png" class="text-white img-right-login"></v-img>  
+                                <b style="position: relative;top: 10px;">Silakan login <br> menggunakan akun anda</b>
+                            </v-card-title>
 
                             <p class="text-red mb-2">{{ message }}</p>
                             <v-text-field v-model="form.email" label="Email" required :rules="emailRules" variant="underlined">
                             </v-text-field>
                             <v-text-field type="password" v-model="form.password" label="Password" required min="8"  :rules="passwordRules" variant="underlined">
                             </v-text-field>
-                            <v-btn block @click="handleLogin" color="info" class="mb-4" :loading="loading">
+                            <v-btn block @click="handleLogin" color="red" class="mb-4" :loading="loading">
                                 Login
                             </v-btn>
 

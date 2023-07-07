@@ -18,6 +18,7 @@ import * as directives from 'vuetify/directives'
 import axios from 'axios'
 
 axios.defaults.baseURL = 'http://bins.local/api/v1/admin/'
+// axios.defaults.baseURL = 'http://be.binsshop.tech/api/v1/admin/'
 
 
 // http://localhost:8080/
@@ -124,11 +125,12 @@ vueApp.mixin({
         },
         errorNotif: function(error) {
             toast.error(error.response.data.error);
+            // let that = this;
             setTimeout(function() {
                 if(error.response.status == 401) {
-                    // logOut();
+                    // that.logOut();
                 }
-           }, 4000);
+           }, 2000);
         },
         userLogin: function(){
             return (this.$store.state.auth) ? this.$store.state.auth.user.user : null;
@@ -145,7 +147,7 @@ vueApp.mixin({
             }
         },
         formatRupiah: function(angka, prefix){
-            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            var number_string = angka.toString().replace(/[^,\d]/g, ''),
             split   		= number_string.split(','),
             sisa     		= split[0].length % 3,
             rupiah     		= split[0].substr(0, sisa),
@@ -157,7 +159,7 @@ vueApp.mixin({
             }
         
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-            return prefix == undefined ? rupiah : (rupiah ? 'Rp.' + rupiah : '');
+            return prefix == undefined ? 'Rp.' + rupiah : (rupiah ? prefix + rupiah : '');
         },
         formatNumber: function(e){
             let angka = e.target.value.replace(/[^,\d]/g, '').toString();

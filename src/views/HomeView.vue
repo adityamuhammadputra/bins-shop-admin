@@ -73,7 +73,7 @@
           <v-timeline>
             <v-timeline-item size="large" v-for="(log, index) in userLogs" v-bind:key="index">
               <template v-slot:icon v-if="log.user">
-                <v-avatar :image="log.user.avatar"></v-avatar>
+                <v-avatar :image="log.user.avatar" referrerpolicy="no-referrer"></v-avatar>
               </template>
               <template v-slot:icon v-else>
                 <v-icon>close</v-icon>
@@ -119,7 +119,9 @@
                 v-for="(user, index) in userOnline" v-bind:key="user.id">
               <td class="text-center">{{ index+1 }}</td>
               <td>
-                <v-list-item :prepend-avatar="user.avatar"
+                <img :src="user.avatar" referrerpolicy="no-referrer" class="img-user-avatar mr-2 mt-0"
+                style="border-radius: 100%;" v-if="user">
+                <v-list-item
                   :title="user.name"
                   :subtitle="user.email"
                   class="px-0 py-0"

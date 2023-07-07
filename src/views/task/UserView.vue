@@ -41,7 +41,7 @@
               <th>User</th> 
               <th>No Hp</th> 
               <th>Transaksi</th> 
-              <th class="text-center">Is Admin</th>
+              <th class="text-center">Login Use</th>
               <th class="text-center"> Created At</th>
             </tr>
           </thead>
@@ -56,7 +56,9 @@
                 v-for="(user, index) in users" v-bind:key="user.id">
               <td class="text-center">{{ index+1 }}</td>
               <td>
-                <v-list-item :prepend-avatar="user.avatar"
+                <img :src="user.avatar" referrerpolicy="no-referrer" class="img-user-avatar mr-2 mt-0"
+                  style="border-radius: 100%;" v-if="user">
+                <v-list-item
                   :title="user.name"
                   :subtitle="user.email"
                   class="px-0 py-0"
@@ -71,8 +73,12 @@
                 {{ user.transaction_success_total }} | {{ user.transaction_success_total_price }}
               </td>
               <td class="text-center">
-                <v-chip class="ma-1" :color="(user.admin) ? 'success' : 'info'" size="small">
-                  <small> {{ (user.admin) ? 'Admin' : 'Biasa' }}</small>
+                
+                <v-chip class="ma-1" color="info" size="small" v-if="!user.admin">
+                  <v-icon>mdi-{{ user.provider }}</v-icon> {{ user.provider }}
+                </v-chip>
+                <v-chip class="ma-1" color="red" size="small" v-else>
+                  <small> Admin</small>
                 </v-chip>
               </td>
               <td  class="text-center">

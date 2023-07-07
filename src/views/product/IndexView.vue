@@ -70,7 +70,8 @@
                     style="min-height: unset;"
                     >
                     <div class="v-list-item-subtitle" v-if="product.discount">
-                      <del style="color: #f55a4e;">{{ product.price_rp }}</del> {{ product.price_final_rp }}
+                      <del style="color: #f55a4e;">{{ product.price_rp }}</del> 
+                      {{ formatRupiah(product.price.replace(".", "") - (product.price.replace(".", "") * product.discount.replace("%", "") / 100), 'Rp ') }}
                     </div>
                     <div class="v-list-item-subtitle" v-else>{{ product.price_rp }}</div>
                   </v-list-item>
