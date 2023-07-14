@@ -275,7 +275,7 @@
           this.axios.post('product', formData, this.$store.state.config)
           .then((response) => {
             this.successNotif(response.data.message)
-            this.$router.push('/master/product');
+            // this.$router.push('/master/product');
             // this.products = response.data.data;
           })
           .catch(error => {

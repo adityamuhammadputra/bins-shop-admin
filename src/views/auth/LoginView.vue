@@ -71,7 +71,8 @@
                 this.loading = true;
                 this.$store.dispatch("auth/login", this.form).then(
                     () => {
-                        this.$router.push("/");
+                        window.location.href = '/'
+                        // this.$router.push("/");
                         this.loading = false;
                     },
                     (error) => {

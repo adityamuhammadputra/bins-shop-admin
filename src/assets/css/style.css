@@ -327,6 +327,13 @@ table .v-list-item__content {
     top: -4px;
 }
 
+table tbody tr:hover {
+    background: #fff4f3;
+}
+
+.table-left tbody tr:nth-child(even):hover {
+    background: #fff4f3;
+}
 .icon-large .mdi {
     font-size: 50px; 
 }

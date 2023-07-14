@@ -17,11 +17,8 @@ import * as directives from 'vuetify/directives'
 // Axios
 import axios from 'axios'
 
+// axios.defaults.baseURL = 'https://be.binsshop.tech/api/v1/admin/'
 axios.defaults.baseURL = 'http://bins.local/api/v1/admin/'
-// axios.defaults.baseURL = 'http://be.binsshop.tech/api/v1/admin/'
-
-
-// http://localhost:8080/
 
 
 import VueAxios from 'vue-axios'
@@ -125,12 +122,9 @@ vueApp.mixin({
         },
         errorNotif: function(error) {
             toast.error(error.response.data.error);
-            // let that = this;
-            setTimeout(function() {
-                if(error.response.status == 401) {
-                    // that.logOut();
-                }
-           }, 2000);
+            if(error.response.status == 401) {
+                this.logOut();
+            }
         },
         userLogin: function(){
             return (this.$store.state.auth) ? this.$store.state.auth.user.user : null;
@@ -164,6 +158,11 @@ vueApp.mixin({
         formatNumber: function(e){
             let angka = e.target.value.replace(/[^,\d]/g, '').toString();
             e.target.value = angka
+        },
+        toHttps: function() {
+            if (location.protocol !== 'https:') {
+                location.replace(`https:${location.href.substring(location.protocol.length)}`);
+            }
         }
     },
 })
