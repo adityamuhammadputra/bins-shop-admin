@@ -95,8 +95,35 @@
       </v-card>
     </v-col>
 
-    <v-col lg="7">
-      <v-card>
+    <v-col :cols="isMobile() ? '12' : '7'">
+      <template v-if="isMobile()">
+        <h3 class="text-left mb-2">User Online</h3>
+        <v-card v-if="userOnline.length == 0">
+          Tidak ada user yg online
+        </v-card>
+        <v-card class="text-left mt-2" v-else v-for="(user, index) in userOnline" v-bind:key="user.id">
+        <v-list>
+          <v-list-item
+            :title="user.name"
+            :subtitle="user.email"
+            class="px-0 py-0"
+            style="min-height: unset;"
+            >
+            <template v-slot:prepend>
+              <b class="mt-3 ml-4" style="width: 22px;">{{ index+1 }}</b>
+              <img :src="user.avatar" referrerpolicy="no-referrer" class="img-user-avatar mr-2 mt-2"
+                style="border-radius: 100%;" v-if="user">
+            </template>
+            <template v-slot:append>
+              <span style="font-size: 13px;margin-right: 12px;">
+                {{ dateOuput(user.last_seen) }} <br/> {{ timeOuput(user.last_seen) }}
+              </span>
+            </template>
+          </v-list-item>
+        </v-list>
+      </v-card>
+      </template>
+      <v-card v-else>
         <v-card-text class="text-left scroll-custom" style="max-height: 500px;overflow-y: auto;">
           <v-card-title class="text-left" style="font-size: 18px;">User Online</v-card-title>
           <v-table class="mt-3 table-left">

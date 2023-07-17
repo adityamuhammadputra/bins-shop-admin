@@ -35,7 +35,7 @@
             style="min-height: unset;"
             >
             <template v-slot:prepend>
-              <b class="mt-4 ml-4" style="width: 22px;">{{ index+1 }}</b>
+              <b class="mt-3 ml-4" style="width: 22px;">{{ index+1 }}</b>
               <img :src="user.avatar" referrerpolicy="no-referrer" class="img-user-avatar mr-2 mt-2"
                 style="border-radius: 100%;" v-if="user">
             </template>

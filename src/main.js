@@ -99,6 +99,9 @@ vueApp.mixin({
         dateOuput2: function(date) {
             return moment(date).format('DD MMMM YYYY');
         },
+        timeOuput: function(date) {
+            return moment(date).format('HH:mm');
+        },
         dateTimeOuput: function(date) {
             if (date)
                 return moment(date).format('DD/MM/YYYY HH:mm');
