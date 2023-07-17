@@ -3,19 +3,28 @@
     <v-container class="py-0 px-0">
       <v-toolbar color="white">
         <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
-        <v-btn icon>
-          <v-icon>mdi-fullscreen</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon :icon="'mdi-weather-' + switchLabel" class="mr-4" @click="toggleDarkMode"></v-icon>
-        </v-btn>
+        <template v-if="isMobile()">
+          <v-btn icon>
+            <router-link to="/">
+              <img src="/img/logo.png" alt="Site Logo" style="width: 55px; float: left;"/>
+            </router-link>
+          </v-btn>
+        </template>
+        <template v-else>
+          <v-btn icon>
+            <v-icon>mdi-fullscreen</v-icon>
+          </v-btn>
+          <v-btn icon>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+          <v-btn icon>
+            <v-icon :icon="'mdi-weather-' + switchLabel" class="mr-4" @click="toggleDarkMode"></v-icon>
+          </v-btn>
+        </template>
 
 
         <v-spacer></v-spacer>
-        <v-toolbar-title>
+        <v-toolbar-title v-if="!isMobile()">
           <router-link to="/">
               <img src="/img/logo.png" alt="Site Logo" style="width: 55px; float: left;"/>
               <h4 class="float-left pt-3">Admin Panel</h4>
@@ -80,7 +89,7 @@
               :value="'tab-' + item.text"
             >
             <router-link :to="item.url">
-              <v-icon>mdi-{{ item.icon }}</v-icon> {{ item.text }}
+              <v-icon>mdi-{{ item.icon }}</v-icon> <template v-if="!isMobile()">{{ item.text }}</template>
             </router-link>    
             </v-tab>
 

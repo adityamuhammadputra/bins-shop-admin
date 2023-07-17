@@ -1,12 +1,12 @@
 <template>
   <v-row>
-      <v-col lg="6">
+      <v-col :cols="isMobile() ? '12' : '6'">
         <h2 class="mt-1 text-left">Daftar Pesanan</h2>
       </v-col>
-      <v-col lg="3">
+      <v-col :cols="isMobile() ? '12' : '3'">
         <VueDatePicker v-model="filters.dates" range format="dd/MM/y" :enableTimePicker="false"/>
       </v-col>
-      <v-col lg="3" class="text-min">
+      <v-col :cols="isMobile() ? '12' : '3'" class="text-min">
         <v-text-field v-model="filters.q" label="Kata Kunci..." @keyup="getIndex" prepend-inner-icon="mdi-magnify" variant="outlined" class=""></v-text-field>
       </v-col>
   </v-row>

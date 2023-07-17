@@ -1,9 +1,9 @@
 <template>
   <v-row :loading="loading">
-    <v-col lg="5">
+    <v-col :cols="isMobile() ? '12' : '5'">
       <h2 class="mt-1 text-left">Daftar Diskusi </h2>
     </v-col>
-    <v-col lg="4">
+    <v-col :cols="isMobile() ? '12' : '4'">
       <v-item-group selected-class="bg-red" class="text-right mt-1 mb-3"
         v-model="filters.replay" @click="getDiscuss(false)" >
         <v-item v-for="(val, key) in replayArr" :key="key" v-slot="{ selectedClass, toggle }">

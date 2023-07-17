@@ -12,8 +12,8 @@
       <v-alert type="error">We're sorry, we're not able to retrieve this information at the moment, please try back later</v-alert>
   </section>
   <section v-else>
-    <v-row >
-      <v-col cols="3"  v-for="(row1, index) in dashboards.row1" v-bind:key="index">
+    <v-row>
+      <v-col lg="3" xs="12"  v-for="(row1, index) in dashboards.row1" v-bind:key="index">
         <v-card :color="row1.color">
           <v-card-text class="text-left icon-large">
             <router-link :to="row1.url" style="color: unset;text-decoration: none;">
@@ -23,7 +23,7 @@
                 </div>
                 <div class="v-list-item-subtitle">
                   {{ row1.label }} <br/>
-                  <small class="text-success" v-if="row1.price">Potensi {{ row1.price }}</small>
+                  <small class="text-success" v-if="row1.price">Potensi{{ row1.price }}</small>
                   <small v-else>.</small>
                 </div>
               </v-list-item>

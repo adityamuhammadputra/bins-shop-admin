@@ -1,9 +1,9 @@
 <template>
   <v-row>
-      <v-col lg="5">
+      <v-col :cols="isMobile() ? '12' : '5'">
         <h2 class="mt-1 text-left">Daftar User</h2>
       </v-col>
-      <v-col lg="4" class="text-right">
+      <v-col :cols="isMobile() ? '12' : '4'" class="text-right">
         <v-item-group selected-class="bg-red" class="text-left mt-1 mb-3"
           v-model="filters.admin" @click="getIndex">
           <v-item v-for="(val, key) in admins" :key="val.key" v-slot="{ selectedClass, toggle }">
@@ -23,7 +23,36 @@
   </section>
   <section v-else>
 
-    <v-card
+    <template v-if="isMobile()" >
+      <v-card v-if="loading">Loading...</v-card>
+      <v-card class="text-left mt-2" 
+        v-else  v-for="(user, index) in users" v-bind:key="user.id">
+        <v-list>
+          <v-list-item
+            :title="user.name"
+            :subtitle="user.email"
+            class="px-0 py-0"
+            style="min-height: unset;"
+            >
+            <template v-slot:prepend>
+              <b class="mt-4 ml-4" style="width: 22px;">{{ index+1 }}</b>
+              <img :src="user.avatar" referrerpolicy="no-referrer" class="img-user-avatar mr-2 mt-2"
+                style="border-radius: 100%;" v-if="user">
+            </template>
+            <template v-slot:append>
+              <v-chip class="ma-1" color="info" size="small" v-if="!user.admin">
+                  <v-icon>mdi-{{ user.provider }}</v-icon> 
+                </v-chip>
+                <v-chip class="ma-1" color="red" size="small" v-else>
+                  <small> Admin</small>
+                </v-chip>
+            </template>
+          </v-list-item>
+        </v-list>
+      </v-card>
+    </template>
+    
+    <v-card v-else
     :loading="loading"
     >
       <v-card-item>
@@ -33,6 +62,8 @@
           <v-col lg="3" class="pb-0">
           </v-col>
         </v-row>
+
+        
         <!-- <v-divider></v-divider> -->
         <v-table class="mt-3 table-left">
           <thead>
@@ -73,7 +104,6 @@
                 {{ user.transaction_success_total }} | {{ user.transaction_success_total_price }}
               </td>
               <td class="text-center">
-                
                 <v-chip class="ma-1" color="info" size="small" v-if="!user.admin">
                   <v-icon>mdi-{{ user.provider }}</v-icon> {{ user.provider }}
                 </v-chip>
