@@ -13,17 +13,17 @@
   </section>
   <section v-else>
     <v-row>
-      <v-col lg="3" xs="12"  v-for="(row1, index) in dashboards.row1" v-bind:key="index">
+      <v-col :cols="(isMobile()) ? 6 : 3"  v-for="(row1, index) in dashboards.row1" v-bind:key="index">
         <v-card :color="row1.color">
           <v-card-text class="text-left icon-large">
-            <router-link :to="row1.url" style="color: unset;text-decoration: none;">
+            <router-link :to="row1.url" style="color: unset;text-decoration: none;" :class="(isMobile()) ? 'icon-mobile-dashboard' : ''">
               <v-list-item :prepend-icon="row1.icon" class="px-0 py-0" style="min-height: unset;">
                 <div class="v-list-item__content mb-1" style="font-size: 20px;font-weight: bold;">
                   {{ row1.total }}
                 </div>
                 <div class="v-list-item-subtitle">
                   {{ row1.label }} <br/>
-                  <small class="text-success" v-if="row1.price">Potensi{{ row1.price }}</small>
+                  <small class="text-success" v-if="row1.price">Potensi {{ row1.price }}</small>
                   <small v-else>.</small>
                 </div>
               </v-list-item>
