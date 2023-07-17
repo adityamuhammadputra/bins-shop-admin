@@ -23,49 +23,51 @@
   </section>
   <section v-if="discusses.length > 0">
     <v-card class="text-left mb-4" v-for="(discuss, index) in discusses" v-bind:key="index">
-      <v-card-item class="border-bottom">
-        <v-card-title>
-          <v-list-item :prepend-avatar="discuss.product.file" :title="discuss.product.name"
-            class="px-0 py-0 pb-1 avatar-flat" style="min-height: unset;"
-            >
-            <div class="v-list-item-subtitle" v-if="discuss.product.discount">
-              <del style="color: #f55a4e;">{{ discuss.product.price_rp }}</del> {{ discuss.product.price_final_rp }}
+      <template v-if="discuss.user">
+        <v-card-item class="border-bottom">
+          <v-card-title>
+            <v-list-item :prepend-avatar="discuss.product.file" :title="discuss.product.name"
+              class="px-0 py-0 pb-1 avatar-flat" style="min-height: unset;"
+              >
+              <div class="v-list-item-subtitle" v-if="discuss.product.discount">
+                <del style="color: #f55a4e;">{{ discuss.product.price_rp }}</del> {{ discuss.product.price_final_rp }}
+              </div>
+              <div class="v-list-item-subtitle" v-else>{{ discuss.product.price_rp }}</div>
+            </v-list-item>
+          </v-card-title>
+        </v-card-item>
+        <v-card-text class="mt-3">
+          <v-list-item :prepend-avatar="discuss.user.avatar" :title="discuss.user.name + ' - ' + dateTimeOuput2(discuss.created_at)"
+            class="px-0 py-0 pb-1" style="min-height: unset;">
+            <div class="v-list-item-subtitle">
+              {{ discuss.desc }}
             </div>
-            <div class="v-list-item-subtitle" v-else>{{ discuss.product.price_rp }}</div>
           </v-list-item>
-        </v-card-title>
-      </v-card-item>
-      <v-card-text class="mt-3">
-        <v-list-item :prepend-avatar="discuss.user.avatar" :title="discuss.user.name + ' - ' + dateTimeOuput2(discuss.created_at)"
-          class="px-0 py-0 pb-1" style="min-height: unset;">
-          <div class="v-list-item-subtitle">
-            {{ discuss.desc }}
-          </div>
-        </v-list-item>
 
-        <div class="replay">
-            <template v-if="discuss.replay.length > 0" >
+          <div class="replay">
+              <template v-if="discuss.replay.length > 0" >
+                <v-list-item
+                  v-for="replay in discuss.replay" v-bind:key="replay.id"
+                  :prepend-avatar="replay.user.avatar" :title="replay.user.name + ' - ' + dateTimeOuput2(replay.created_at)"
+                  class="px-0 py-0 pb-2" style="min-height: unset;">
+                  <div class="v-list-item-subtitle">
+                    {{ replay.desc }}
+                  </div>
+                </v-list-item>
+              </template>
+
               <v-list-item
-                v-for="replay in discuss.replay" v-bind:key="replay.id"
-                :prepend-avatar="replay.user.avatar" :title="replay.user.name + ' - ' + dateTimeOuput2(replay.created_at)"
-                class="px-0 py-0 pb-2" style="min-height: unset;">
+                :prepend-avatar="user.avatar" :title="this.user.name"
+                class="px-0 py-0 pb-3 mt-2" style="min-height: unset;">
                 <div class="v-list-item-subtitle">
-                  {{ replay.desc }}
+                  <v-text-field clearable label="Balas" :hide-details="true"  variant="underlined" 
+                    v-model="replayInput[index]" v-on:keyup.enter="postDiscuss(discuss, index, discuss.id)"></v-text-field>
                 </div>
               </v-list-item>
-            </template>
-
-            <v-list-item
-              :prepend-avatar="user.avatar" :title="this.user.name"
-              class="px-0 py-0 pb-3 mt-2" style="min-height: unset;">
-              <div class="v-list-item-subtitle">
-                <v-text-field clearable label="Balas" :hide-details="true"  variant="underlined" 
-                  v-model="replayInput[index]" v-on:keyup.enter="postDiscuss(discuss, index, discuss.id)"></v-text-field>
-              </div>
-            </v-list-item>
-        </div>
-        
-      </v-card-text>
+          </div>
+          
+        </v-card-text>
+      </template>
     </v-card>
   </section>
 

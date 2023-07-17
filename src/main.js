@@ -17,8 +17,8 @@ import * as directives from 'vuetify/directives'
 // Axios
 import axios from 'axios'
 
-// axios.defaults.baseURL = 'https://be.binsshop.tech/api/v1/admin/'
-axios.defaults.baseURL = 'http://bins.local/api/v1/admin/'
+axios.defaults.baseURL = 'https://be.binsshop.tech/api/v1/admin/'
+// axios.defaults.baseURL = 'http://bins.local/api/v1/admin/'
 
 
 import VueAxios from 'vue-axios'

@@ -3,11 +3,11 @@
     <v-col lg="6">
       <h2 class="mt-1 text-left">Tambah Produk</h2>
     </v-col>
-    <!-- <v-col lg="6" class="text-right">
+    <v-col lg="6" class="text-right">
       <router-link to="/master/product">
         <v-btn flat variant="outlined" color="grey"> <v-icon>mdi-arrow-left</v-icon> Kembali </v-btn>
       </router-link>
-    </v-col> -->
+    </v-col>
   </v-row>
   <v-card class="text-left">
     <v-card-item>
@@ -166,11 +166,11 @@
 
   <v-row justify="end">
     <v-col cols="2" end class="text-right mt-4">
-      <router-link to="/master/product">
+      <a :href="'/master/product/' + this.product.slug + '/edit'">
         <v-btn variant="outlined" block > 
             Batal
         </v-btn> 
-      </router-link>
+      </a>
     </v-col>
     <v-col cols="2" end class="text-right mt-4" v-if="this.$route.name && this.$route.params.slug">
       <v-btn variant="flat" block color="blue-darken-4" @click="patchProduct" :loading="loading"> <v-icon>mdi-check</v-icon> Perbaharui</v-btn>
@@ -335,7 +335,7 @@
             this.preview.img5 = URL.createObjectURL(file), this.product.img5 = file;
         },
         setRupiah: function() {
-          this.product.price = this.formatRupiah(this.product.price)
+          this.product.price = this.formatRupiah(this.product.price, '')
         },
         // setNumber: function(e){
         //   e.target.value = this.formatNumber(e.target.value);

@@ -103,8 +103,9 @@
         return {
           admins: [ 
             {key: 0, val: 'Tampilkan Semua'}, 
-            {key: 1, val: 'Hanya Admin'}, 
-            {key: 2, val: 'Selain Admin'}, 
+            {key: 1, val: 'Admin'}, 
+            {key: 2, val: 'User'}, 
+            {key: 3, val: 'Fake'}, 
           ],
           users: [],
           loading: true,
