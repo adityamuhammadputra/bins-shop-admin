@@ -22,16 +22,16 @@
                   {{ row1.total }}
                 </div>
                 <div class="v-list-item-subtitle">
-                  {{ row1.label }} <br/>
+                  {{ row1.label }} <br/>  
                   <small class="text-success" v-if="row1.price">Potensi {{ row1.price }}</small>
                   <small v-else>.</small>
-                </div>
-              </v-list-item>
-            </router-link>
-          </v-card-text>
-        </v-card>
+                </div>  
+              </v-list-item>          
+            </router-link>  
+          </v-card-text>    
+        </v-card> 
       </v-col>
-    </v-row>
+    </v-row>  
 
     <v-row class="mt-3 text-left">
       <v-col cols="12"> 

@@ -72,11 +72,12 @@
                 <template v-for="detail in transaction.transaction_details" :key="detail.id">
                   <v-list-item :prepend-avatar="detail.product.file"
                     :title="detail.name"
-                    :subtitle="detail.price_rp + ' x ' + detail.qty"
+                    :subtitle="detail.price_discount_rp + ' x ' + detail.qty"
                     class="px-0 py-0"
                     style="min-height: unset;"
                     >
                   </v-list-item>
+                  <p style="color: grey;font-style: italic;">{{ detail.notes }}</p>
                 </template>
               </td>
               <td>
@@ -91,7 +92,10 @@
                 {{ dateTimeOuput(transaction.updated_at) }}
               </td>
               <td>
-                <v-btn size="small" flat v-if="transaction.status.id == 2" color="info" @click="updateStatus(transaction, 3)">
+                <v-btn size="small" flat v-if="transaction.status.id == 1" color="red" @click="updateStatus(transaction, 2)">
+                  <v-icon>mdi-check-all</v-icon> Validasi
+                </v-btn>
+                <v-btn size="small" flat v-else-if="transaction.status.id == 2" color="info" @click="updateStatus(transaction, 3)">
                   <v-icon>mdi-check-all</v-icon> Kirim
                 </v-btn>
                 <v-btn size="small" flat v-else-if="transaction.status.id == 3" color="success" @click="updateStatus(transaction, 4)">
@@ -154,6 +158,12 @@
         },
         updateStatus: function(transaction, status) {
           let attr;
+          if (status == 2) {
+              attr = {
+                  'textHtml' : 'Sudah pastikan pembayaran <b>' + transaction.invoice + '</b> ?',
+                  'textButton' : 'Ya, sudah',
+              }
+          }
           if (status == 3) {
               attr = {
                   'textHtml' : 'Sudah kirim Lisensi <b>' + transaction.invoice + '</b> ?',
